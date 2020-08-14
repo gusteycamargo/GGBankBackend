@@ -10,7 +10,13 @@ export default class Account extends BaseModel {
   public number: string
 
   @column()
-  public amount: number
+  public type: string
+
+  @column()
+  public amountCurrent: number
+
+  @column()
+  public amountSaving: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

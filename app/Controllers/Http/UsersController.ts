@@ -17,15 +17,15 @@ export default class UsersController {
     return user
   }
 
-  public async show ({ auth, params, response }: HttpContextContract) {
-    await auth.authenticate()
-    try {
-      const user = await User.findOrFail(params.id)
-      return user
-    } catch(error) {
-      return response.status(400).send('Ocorreu um erro')
-    }
-  }
+  // public async show ({ auth, params, response }: HttpContextContract) {
+  //   await auth.authenticate()
+  //   try {
+  //     const user = await User.findOrFail(params.id)
+  //     return user
+  //   } catch(error) {
+  //     return response.status(400).send('Ocorreu um erro')
+  //   }
+  // }
 
   public async update ({ request, auth, params, response }: HttpContextContract) {
     const userAuth = await auth.authenticate()
