@@ -1,10 +1,11 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Hash from '@ioc:Adonis/Core/Hash'
 import User from 'App/Models/User'
+import Account from 'App/Models/Account'
 
 export default class UsersController {
   public async index () {
-    const users = await User.all()
+    const users = await User.query().preload('account')
     return users
   }
 
@@ -33,10 +34,13 @@ export default class UsersController {
       const user = await User.findOrFail(params.id)
 
       if(userAuth.id === user.id) {
-        const data = request.only(['fullname', 'cpf', 'email', 'phone', 'password'])
+        const data = request.only(['fullname', 'cpf', 'email', 'phone', 'password', 'account'])
+        if(data.account) {
+          const account = await Account.findOrFail(data.account)
+          await user.related('account').associate(account)
+        }
         await user.merge(data)
-        //await equipaments.load('campus');
-
+        await user.preload('account')
         return user
       } else {
         return response.status(403).send('Área não autorizada')
@@ -51,8 +55,10 @@ export default class UsersController {
     const user = await User.findOrFail(params.id)
 
     if(userAuth.id === user.id) {
+      await user.preload('account')
+      const account = await Account.findOrFail(user.account.id)
+      await account.delete()
       await user.delete()
-      //await equipaments.load('campus');
 
       return user
     } else {
