@@ -24,6 +24,7 @@ Route.get('/', async () => {
   return { hello: 'world' }
 })
 
+Route.post('/sessions', 'SessionsController.create')
 Route.resource('accounts', 'AccountsController')
 Route.resource('users', 'UsersController')
 
