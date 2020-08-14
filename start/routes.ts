@@ -25,3 +25,5 @@ Route.get('/', async () => {
 })
 
 Route.resource('accounts', 'AccountsController')
+Route.resource('users', 'UsersController')
+
