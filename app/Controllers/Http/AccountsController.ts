@@ -10,7 +10,7 @@ export default class AccountsController {
 
   public async store ({ request, auth }: HttpContextContract) {
     await auth.authenticate()
-    const data = request.only(['number', 'amountCurrent', 'amountSaving'])
+    const data = request.only(['amountCurrent', 'amountSaving'])
 
     const account = await Account.create(data)
 
