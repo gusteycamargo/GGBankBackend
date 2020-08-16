@@ -18,15 +18,20 @@ export default class UsersController {
     return user
   }
 
-  // public async show ({ auth, params, response }: HttpContextContract) {
-  //   await auth.authenticate()
-  //   try {
-  //     const user = await User.findOrFail(params.id)
-  //     return user
-  //   } catch(error) {
-  //     return response.status(400).send('Ocorreu um erro')
-  //   }
-  // }
+  public async show ({ auth, params, response }: HttpContextContract) {
+    const userLogged = await auth.authenticate()
+    try {
+      const user = await User.findOrFail(params.id)
+
+      if(user.id === userLogged.id) {
+        return user
+      } else {
+        return response.status(403).send('Área não autorizada')
+      }
+    } catch(error) {
+      return response.status(400).send('Ocorreu um erro')
+    }
+  }
 
   public async update ({ request, auth, params, response }: HttpContextContract) {
     const userAuth = await auth.authenticate()
